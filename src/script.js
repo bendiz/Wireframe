@@ -1,28 +1,27 @@
 let weather = {
   paris: {
     temp: 19.7,
-    humidity: 80,
+    humidity: 80
   },
   tokyo: {
     temp: 17.3,
-    humidity: 50,
+    humidity: 50
   },
   lisbon: {
     temp: 30.2,
-    humidity: 20,
+    humidity: 20
   },
   "san francisco": {
     temp: 20.9,
-    humidity: 100,
+    humidity: 100
   },
   oslo: {
     temp: -5,
-    humidity: 20,
-  },
+    humidity: 20
+  }
 };
 
 // Variables
-// const citySelection = prompt("Enter a city").trim().toLowerCase();
 let message = "";
 let celsius = 0;
 let fahrenheit = 0;
@@ -31,12 +30,13 @@ let upperCaseLetter = "";
 let lowerCaseLetters = "";
 let city = "";
 
-// // Converts celsius into fahrenheit
+// Converts celsius into fahrenheit
 function celsiusToFahrenheit(celsius) {
   fahrenheit = (celsius *= 1.8) + 32;
   return Math.round(fahrenheit);
 }
 
+// Converts fahrenheit to celsius
 function fahrenheitToCelsius(fahrenheit) {
   celsius = ((fahrenheit - 32) * 5) / 9;
   return Math.round(celsius);
@@ -59,7 +59,7 @@ function weatherMessage(citySelection) {
     );
 }
 
-// Make first letter of city capitalized for the weather alert message
+// Make first letter of city capitalized
 function lowerToUpperCase(citySelection) {
   upperCaseLetter = citySelection.charAt(0).toUpperCase();
   lowerCaseLetters = citySelection.substring(1);
@@ -67,10 +67,11 @@ function lowerToUpperCase(citySelection) {
   return city;
 }
 
-// weatherMessage(citySelection);
+// Homework week 4 //
 
-// Homework week 4
-// Feature 1 - display current day and time
+// Feature 1 - Display current day and time
+
+// Current day
 let date = new Date();
 
 let currentDayText = document.querySelector("#current-day");
@@ -83,18 +84,42 @@ let days = [
   "Wednesday",
   "Thursday",
   "Friday",
-  "Saturday",
+  "Saturday"
 ];
 
 let currentDay = days[numberOfDay];
+let cityInput = "";
 currentDayText.innerHTML = currentDay.toUpperCase();
+
+// Current Time
+let months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec"
+];
+let currentDate = date.getDate();
+let currentMonth = months[date.getMonth()];
+let currentYear = date.getFullYear();
+let currentHour = date.getHours();
+let currentMinute = date.getMinutes();
+let currentTimeText = document.querySelector("#current-date-time");
+currentTimeText.innerHTML = `${currentDate}.${currentMonth} ${currentYear} - ${currentHour}:${currentMinute}`;
 
 // Feature 2 - Add search engine
 let cityNameText = document.querySelector("#current-city");
 let form = document.querySelector("#search-form");
 function displayCity(event) {
   event.preventDefault();
-  let cityInput = document.getElementById("search").value.toLowerCase().trim();
+  cityInput = document.getElementById("search").value.toLowerCase().trim();
   cityNameText.innerHTML = `${lowerToUpperCase(cityInput)}`;
 }
 form.addEventListener("submit", displayCity);
