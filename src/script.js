@@ -110,18 +110,39 @@ let currentDate = date.getDate();
 let currentMonth = months[date.getMonth()];
 let currentYear = date.getFullYear();
 let currentHour = date.getHours();
-let currentMinute = date.getMinutes();
+let currentMinute = String(date.getMinutes()).padStart(2, "0");
 let currentTimeText = document.querySelector("#current-date-time");
 currentTimeText.innerHTML = `${currentDate}.${currentMonth} ${currentYear} - ${currentHour}:${currentMinute}`;
 
-// Feature 2 - Add search engine
+// Add search engine  - real time/date/cityname/temp
 let cityNameText = document.querySelector("#current-city");
 let form = document.querySelector("#search-form");
-function displayCity(event) {
+let units = "metric";
+let apiKey = "58c0ef7fd7e74079efc9a68d7040f613";
+
+let getTemperature = (response) => {
+  celsius = Math.round(response.data.main.temp);
+  let temperatureText = document.querySelector("#fake-temperature");
+  temperatureText.innerHTML = celsius;
+  getWind(response);
+  return celsius;
+};
+let wind = 0;
+
+let getWind = (response) => {
+  wind = Math.round(response.data.wind.speed);
+  let windText = document.querySelector("#wind-speed");
+  windText.innerHTML = `Wind:${wind}m/s`;
+};
+
+let displayCity = (event) => {
   event.preventDefault();
   cityInput = document.getElementById("search").value.toLowerCase().trim();
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityInput}&appid=${apiKey}&units=${units}`;
+  axios.get(apiUrl).then(getTemperature);
   cityNameText.innerHTML = `${lowerToUpperCase(cityInput)}`;
-}
+};
+
 form.addEventListener("submit", displayCity);
 
 // Bonus Feature
@@ -130,11 +151,9 @@ let fakeTemperature = document.querySelector("#fake-temperature");
 let fakeFahrenheit = 0;
 let fakeCelsius = document.querySelector("#fake-temperature").innerHTML;
 
-temperatureLink.addEventListener("click", temperatureConversion);
-
-function temperatureConversion() {
+let temperatureConversion = () => {
   if (temperatureLink.innerHTML === "°C") {
-    fakeFahrenheit = celsiusToFahrenheit(fakeCelsius);
+    fakeFahrenheit = celsiusToFahrenheit(celsius);
     temperatureLink.innerHTML = "°F";
     fakeTemperature.innerHTML = fakeFahrenheit;
     return fakeFahrenheit;
@@ -144,4 +163,28 @@ function temperatureConversion() {
     fakeTemperature.innerHTML = fakeCelsius;
     return fakeCelsius;
   }
-}
+};
+temperatureLink.addEventListener("click", temperatureConversion);
+
+// Bonus week 5
+
+let geoLocation = (response) => {
+  let location = response.data.name;
+  cityNameText.innerHTML = `${lowerToUpperCase(location)}`;
+  getTemperature(response);
+  getWind(response);
+  return location;
+};
+
+let positionCoordinates = (position) => {
+  let latitude = position.coords.latitude;
+  let longitude = position.coords.longitude;
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=${units}`;
+  axios.get(apiUrl).then(geoLocation);
+};
+
+let geoButton = document.querySelector("#geo-button");
+geoButton.addEventListener(
+  "click",
+  navigator.geolocation.getCurrentPosition(positionCoordinates)
+);

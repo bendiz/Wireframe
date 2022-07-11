@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -35,7 +36,6 @@
       <div class="weather-card">
         <form id="search-form">
           <input
-            style="font-family: Poppins;"
             type="search"
             name="search"
             id="search"
@@ -44,7 +44,15 @@
             maxlength="14"
             minlength="2"
           />
+          <button
+            id="geo-button"
+            onclick="onclick"
+            ="this.disabled = 'disabled';"
+          >
+            <i class="fa-solid fa-location-dot"></i>
+          </button>
         </form>
+
         <div class="middle-section">
           <div class="current-weather-section">
             <img
@@ -53,13 +61,13 @@
               class="weather-icon"
             />
             <div class="info-left">
-              <h3 class="current-day">TODAY</h3>
+              <!-- <h3 class="current-day">TODAY</h3> -->
               <link class="current-temp" />
               <div class="fake-temperature-container">
                 <h2 id="fake-temperature">22</h2>
                 <a href="#" id="celsius-fahrenheit">°C</a>
               </div>
-              <p class="current-date-time">Wind:19m/s</p>
+              <p class="current-date-time" id="wind-speed">Wind:19m/s</p>
             </div>
           </div>
           <div class="info-right">
